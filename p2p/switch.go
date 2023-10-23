@@ -165,7 +165,11 @@ func (sw *Switch) Broadcast(chID int32, msgBytes []byte) {
 }
 
 func (sw *Switch) Send(pr string, chID int32, msgBytes []byte) error {
-	p, err := sw.peers.Find(PeerID(pr))
+	id, err := peer.Decode(pr)
+	if err != nil {
+		sw.log.Error("fail to convert string to id @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, pr, chID, msgBytes)
+	}
+	p, err := sw.peers.Find(id)
 	if err != nil {
 		sw.log.Error("fail to find peer @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, pr, chID, msgBytes)
 		return err
