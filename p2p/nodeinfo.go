@@ -3,7 +3,7 @@ package p2p
 import (
 	"net"
 
-	peer "github.com/libp2p/go-libp2p-core/peer"
+	"github.com/libp2p/go-libp2p-core/peer"
 )
 
 // NodeInfo exposes basic info of a node
@@ -29,7 +29,7 @@ type DefaultNodeInfo struct {
 	addr *peer.AddrInfo
 }
 
-func (n *DefaultNodeInfo) ID() PeerID { return PeerID(n.addr.ID.Pretty()) }
+func (n *DefaultNodeInfo) ID() PeerID { return n.addr.ID }
 func (n *DefaultNodeInfo) NetAddress() (*NetAddress, error) {
 	// /ip4/127.0.0.1/tcp/30002
 	return nil, nil

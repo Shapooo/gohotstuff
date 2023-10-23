@@ -164,14 +164,14 @@ func (sw *Switch) Broadcast(chID int32, msgBytes []byte) {
 	sw.log.Info("Broadcast completed @ Broadcast, chID: %d, msgBytes: %X", chID, msgBytes)
 }
 
-func (sw *Switch) Send(peer string, chID int32, msgBytes []byte) error {
-	p, err := sw.peers.Find(PeerID(peer))
+func (sw *Switch) Send(pr string, chID int32, msgBytes []byte) error {
+	p, err := sw.peers.Find(PeerID(pr))
 	if err != nil {
-		sw.log.Error("fail to find peer @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, peer, chID, msgBytes)
+		sw.log.Error("fail to find peer @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, pr, chID, msgBytes)
 		return err
 	}
 	if !p.Send(chID, msgBytes) {
-		return fmt.Errorf("fail to send @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, peer, chID, msgBytes)
+		return fmt.Errorf("fail to send @ Send, err: %v, peer_id: %v, chID: %d, msgBytes: %X", err, pr, chID, msgBytes)
 	}
 	return nil
 }
@@ -215,7 +215,7 @@ retry:
 // encounter is returned.
 // Nop if there are no peers.
 func (sw *Switch) dialPeersAsync(id peer.ID) error {
-	old, err := sw.peers.Find(PeerID(id.Pretty()))
+	old, err := sw.peers.Find(id)
 	if err == nil {
 		if err := old.Validate(); err == nil {
 			return nil
@@ -245,7 +245,7 @@ func (sw *Switch) acceptRoutine() {
 		select {
 		case <-sw.timer.C:
 			for _, peerID := range sw.kdht.RoutingTable().ListPeers() {
-				if _, err := sw.peers.Find(PeerID(peerID)); err == nil {
+				if _, err := sw.peers.Find(peerID); err == nil {
 					continue
 				}
 				multiAddr := sw.genPeerMultiID(peerID)
@@ -286,7 +286,7 @@ func (sw *Switch) connect(multiAddr string) error {
 }
 
 func (sw *Switch) handleStream(netStream network.Stream) {
-	old, err := sw.peers.Find(PeerID(netStream.Conn().RemotePeer().Pretty()))
+	old, err := sw.peers.Find(netStream.Conn().RemotePeer())
 	if err == nil {
 		if err := old.Validate(); err == nil {
 			sw.log.Error("use an old one @ handleStream, peer_id: %s", netStream.Conn().RemotePeer())
@@ -304,7 +304,7 @@ func (sw *Switch) handleStream(netStream network.Stream) {
 	sw.log.Info("build stream success from a new remote peer @ handleStream, peer_id: %s", netStream.Conn().RemotePeer())
 }
 
-//---------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------
 type Config struct {
 	Address    string
 	BootStrap  []string

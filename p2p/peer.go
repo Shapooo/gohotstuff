@@ -7,10 +7,10 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/aucusaga/gohotstuff/libs"
 	"github.com/libp2p/go-libp2p-core/network"
-	peer "github.com/libp2p/go-libp2p-core/peer"
+	pr "github.com/libp2p/go-libp2p-core/peer"
 )
 
-type PeerID string
+type PeerID = pr.ID
 
 // Peer is an interface representing a peer connected on a reactor.
 type Peer interface {
@@ -91,7 +91,7 @@ type DefaultPeer struct {
 	conn *DefaultConn
 }
 
-func NewDefaultPeer(peer *peer.AddrInfo, netStream network.Stream,
+func NewDefaultPeer(peer *pr.AddrInfo, netStream network.Stream,
 	onReceiveIdx map[Module]libs.Reactor, logger libs.Logger) (Peer, error) {
 	// create a new logger
 	if logger == nil {

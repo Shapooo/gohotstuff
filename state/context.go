@@ -2,9 +2,11 @@ package state
 
 import (
 	"io"
+
+	"github.com/libp2p/go-libp2p-core/peer"
 )
 
-type PeerID string
+type PeerID = peer.ID
 
 // Message is a message that can be sent and received within peers
 type MsgInfo interface {

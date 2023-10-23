@@ -513,7 +513,7 @@ func (s *State) getTimeoutID(round int64, index int64) []byte {
 	return []byte(fmt.Sprintf("tmo_%d_%d", round, index))
 }
 
-//----------------------------------------------------------------
+// ----------------------------------------------------------------
 type ConsensusConfig struct {
 	StartRound      int64
 	StartTimeoutIdx int64
