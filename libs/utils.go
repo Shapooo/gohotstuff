@@ -50,7 +50,7 @@ func GetCurExecDir() string {
 func GetCurRootDir() string {
 	if len(envCfg) <= 0 {
 		curExecDir := GetCurExecDir()
-		envCfg = filepath.Dir(curExecDir)
+		envCfg = curExecDir
 	}
 	return envCfg
 }

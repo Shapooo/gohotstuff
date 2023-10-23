@@ -73,11 +73,11 @@ func KeyDirReady(key string) string {
 	var cfgPath string
 	switch key {
 	case NetworkName:
-		cfgPath = filepath.Join(libs.GetCurRootDir(), "output/conf/netkeys")
+		cfgPath = filepath.Join(libs.GetCurRootDir(), "conf/netkeys")
 	case CryptoName:
-		cfgPath = filepath.Join(libs.GetCurRootDir(), "output/conf/keys")
+		cfgPath = filepath.Join(libs.GetCurRootDir(), "conf/keys")
 	case AddressName:
-		cfgPath = filepath.Join(libs.GetCurRootDir(), "output/conf")
+		cfgPath = filepath.Join(libs.GetCurRootDir(), "conf")
 	default:
 		panic("invalid key type, must be `network` or `crypto`")
 	}
