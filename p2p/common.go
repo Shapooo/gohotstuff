@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/aucusaga/gohotstuff/libs"
@@ -27,7 +27,7 @@ func GenerateKeyPairWithPath(path string) error {
 		return err
 	}
 
-	return ioutil.WriteFile(filepath.Join(path, "private.key"), []byte(base64.StdEncoding.EncodeToString(privData)), 0700)
+	return os.WriteFile(filepath.Join(path, "private.key"), []byte(base64.StdEncoding.EncodeToString(privData)), 0700)
 }
 
 func GetKeyPairFromPath(path string) (crypto.PrivKey, error) {
@@ -38,7 +38,7 @@ func GetKeyPairFromPath(path string) (crypto.PrivKey, error) {
 	if !libs.FileIsExist(f) {
 		return nil, errors.New("invalid p2p key path")
 	}
-	data, err := ioutil.ReadFile(f)
+	data, err := os.ReadFile(f)
 	if err != nil {
 		return nil, err
 	}

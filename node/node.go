@@ -1,7 +1,7 @@
 package node
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/astaxie/beego/logs"
@@ -65,7 +65,7 @@ func NewNode(config *libs.Config) (*Node, error) {
 
 	// load netkeys
 	netPath := filepath.Join(filepath.Join(libs.GetCurRootDir(), "conf"), config.Netpath)
-	netPriKey, err := ioutil.ReadFile(filepath.Join(netPath, "private.key"))
+	netPriKey, err := os.ReadFile(filepath.Join(netPath, "private.key"))
 	if err != nil {
 		logger.Warn("load private key err, err: %+v", err)
 		panic("cannot get private key")
@@ -93,7 +93,7 @@ func NewNode(config *libs.Config) (*Node, error) {
 
 	// load crypto keys
 	keypath := filepath.Join(filepath.Join(libs.GetCurRootDir(), "conf"), config.Keypath)
-	priKey, err := ioutil.ReadFile(filepath.Join(keypath, "private.key"))
+	priKey, err := os.ReadFile(filepath.Join(keypath, "private.key"))
 	if err != nil {
 		logger.Warn("load private key err, err: %+v", err)
 		panic("cannot get private key")
@@ -131,7 +131,7 @@ func (n *Node) Start() {
 	go n.smr.Start()
 }
 
-//-----------------------------------------
+// -----------------------------------------
 type NodeConfig struct {
 	name  string
 	p2p   *p2p.Config
