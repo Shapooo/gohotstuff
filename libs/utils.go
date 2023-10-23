@@ -13,11 +13,11 @@ var envCfg string
 
 func GenRandomID() uint64 {
 	nano := time.Now().UnixNano()
-	rand.Seed(nano)
-	randNum1 := rand.Int63()
-	randNum2 := rand.Int63()
-	shift1 := rand.Intn(16) + 2
-	shift2 := rand.Intn(8) + 1
+	r := rand.New(rand.NewSource(nano))
+	randNum1 := r.Int63()
+	randNum2 := r.Int63()
+	shift1 := r.Intn(16) + 2
+	shift2 := r.Intn(8) + 1
 
 	randId := ((randNum1 >> uint(shift1)) + (randNum2 >> uint(shift2)) + (nano >> 1)) &
 		0x7FFFFFFFFFFFFFFF
