@@ -67,14 +67,14 @@ func (s *DefaultSafetyRules) CheckVote(qc QuorumCert) error {
 		return err
 	}
 	validators := s.ptr.election.Validators(voteR, nil)
-	invalidSender := false
+	validSender := false
 	for _, v := range validators {
 		if v == PeerID(qc.Sender()) {
-			invalidSender = true
+			validSender = true
 			break
 		}
 	}
-	if !invalidSender {
+	if !validSender {
 		return fmt.Errorf("invalid vote sender, qc: %s, validators: %+v", qc.String(), validators)
 	}
 	_, err = s.ptr.tree.Search(voteR, voteID)
@@ -95,14 +95,14 @@ func (s *DefaultSafetyRules) CheckTimeout(qc QuorumCert) error {
 		return fmt.Errorf("stale tmo, tmo: %s, current_round: %d", qc.String(), cr)
 	}
 	validators := s.ptr.election.Validators(tmoR, nil)
-	invalidSender := false
+	validSender := false
 	for _, v := range validators {
 		if v == PeerID(qc.Sender()) {
-			invalidSender = true
+			validSender = true
 			break
 		}
 	}
-	if !invalidSender {
+	if !validSender {
 		return fmt.Errorf("invalid tmo sender, qc: %s, validators: %+v", qc.String(), validators)
 	}
 
